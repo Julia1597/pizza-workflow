@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0hemdte" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.45.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <bpmn:process id="pizza-order-process" name="Pizza Order Process" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Commande reçue">
+      <bpmn:outgoing>Flow_1806el0</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1806el0" sourceRef="StartEvent_1" targetRef="Activity_05gbz3i" />
+    <bpmn:serviceTask id="Activity_05gbz3i" name="Recevoir commande pizza">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="receive-order" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1806el0</bpmn:incoming>
+      <bpmn:outgoing>Flow_0jgqvbb</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0jgqvbb" sourceRef="Activity_05gbz3i" targetRef="Activity_02b2o00" />
+    <bpmn:sequenceFlow id="Flow_03z66h1" sourceRef="Activity_02b2o00" targetRef="Activity_1mhzcjl" />
+    <bpmn:userTask id="Activity_02b2o00" name="Confirmer la commande">
+      <bpmn:extensionElements>
+        <zeebe:userTask />
+        <zeebe:assignmentDefinition assignee="demo" candidateGroups="pizza-team" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0jgqvbb</bpmn:incoming>
+      <bpmn:outgoing>Flow_03z66h1</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_1mhzcjl" name="Préparer la pizza">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="prepare-pizza" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_03z66h1</bpmn:incoming>
+      <bpmn:outgoing>Flow_1mm090n</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1mm090n" sourceRef="Activity_1mhzcjl" targetRef="Activity_0m7c2rh" />
+    <bpmn:serviceTask id="Activity_0m7c2rh" name="Livrer la pizza">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="deliver-pizza" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1mm090n</bpmn:incoming>
+      <bpmn:outgoing>Flow_0z5bhpm</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0z5bhpm" sourceRef="Activity_0m7c2rh" targetRef="Event_1lff4h4" />
+    <bpmn:endEvent id="Event_1lff4h4" name="Commande livrée">
+      <bpmn:incoming>Flow_0z5bhpm</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition_0rvogs6" />
+    </bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="pizza-order-process">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="182" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="156" y="78" width="88" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0697kzf_di" bpmnElement="Activity_05gbz3i">
+        <dc:Bounds x="180" y="190" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0c0we31_di" bpmnElement="Activity_02b2o00">
+        <dc:Bounds x="310" y="300" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ys2kg6_di" bpmnElement="Activity_1mhzcjl">
+        <dc:Bounds x="160" y="420" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0mkewk3_di" bpmnElement="Activity_0m7c2rh">
+        <dc:Bounds x="380" y="580" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0zikw10_di" bpmnElement="Event_1lff4h4">
+        <dc:Bounds x="212" y="742" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="187" y="785" width="87" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1806el0_di" bpmnElement="Flow_1806el0">
+        <di:waypoint x="200" y="138" />
+        <di:waypoint x="200" y="164" />
+        <di:waypoint x="230" y="164" />
+        <di:waypoint x="230" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0jgqvbb_di" bpmnElement="Flow_0jgqvbb">
+        <di:waypoint x="280" y="230" />
+        <di:waypoint x="360" y="230" />
+        <di:waypoint x="360" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03z66h1_di" bpmnElement="Flow_03z66h1">
+        <di:waypoint x="410" y="340" />
+        <di:waypoint x="455" y="340" />
+        <di:waypoint x="455" y="460" />
+        <di:waypoint x="260" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1mm090n_di" bpmnElement="Flow_1mm090n">
+        <di:waypoint x="260" y="460" />
+        <di:waypoint x="430" y="460" />
+        <di:waypoint x="430" y="580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0z5bhpm_di" bpmnElement="Flow_0z5bhpm">
+        <di:waypoint x="480" y="620" />
+        <di:waypoint x="621" y="620" />
+        <di:waypoint x="621" y="760" />
+        <di:waypoint x="248" y="760" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
