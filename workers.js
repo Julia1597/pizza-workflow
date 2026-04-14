@@ -3,12 +3,9 @@ require('dotenv').config();
 const { Camunda8 } = require('@camunda8/sdk');
 
 // ─── Connexion à Zeebe ───────────────────────────────────────
-const camunda = new Camunda8({
-  ZEEBE_ADDRESS: process.env.ZEEBE_ADDRESS || 'localhost:26500',
-  ZEEBE_SECURE_CONNECTION: process.env.ZEEBE_SECURE_CONNECTION === 'true',
-});
-
-const { zeebeClient } = camunda.getCamundaClients();
+// Grâce à notre super fichier .env, on a juste besoin de ces deux lignes !
+const camunda = new Camunda8();
+const zeebeClient = camunda.getZeebeGrpcApiClient();
 
 // Utilitaire : pause simulée
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -34,17 +31,14 @@ zeebeClient.createWorker({
 zeebeClient.createWorker({
   taskType: 'prepare-pizza',
   taskHandler: async (job) => {
-    // On récupère le type de pizza et le nom du client depuis les variables de l'étape précédente
     const { pizzaType, customerName } = job.variables;
     
     console.log(`Préparation de ${pizzaType} pour ${customerName}...`);
     console.log('Cuisson en cours...');
     
-    // On simule 2 secondes de cuisson
-    await delay(2000);
+    await delay(2000); // On simule 2 secondes de cuisson
     console.log('Pizza prête !');
     
-    // On termine la tâche et on met à jour le statut
     return job.complete({
       status    : 'pizza-ready',
       preparedAt: new Date().toISOString(),
@@ -61,15 +55,15 @@ zeebeClient.createWorker({
     
     console.log(`Livraison de ${pizzaType} → ${customerName} (${address})`);
     
-    // On simule 1 seconde de trajet
-    await delay(1000); 
+    await delay(1000); // On simule 1 seconde de trajet
     
     console.log('Pizza livrée ! Bon appétit');
     
-    // On termine le job en produisant les variables de sortie
     return job.complete({
       status     : 'delivered',
       deliveredAt: new Date().toISOString(),
     });
   },
 });
+
+console.log('Workers démarrés — en attente de jobs...');
