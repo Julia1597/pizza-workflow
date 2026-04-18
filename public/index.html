@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Pizza Workflow - Commande</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Commande de Pizza</h1>
+        <p>Système orchestré par Camunda 8</p>
+
+        <form id="orderForm">
+            <div class="form-group">
+                <label for="customerName">Votre Nom :</label>
+                <input type="text" id="customerName" required placeholder="Ex: Alice Martin">
+            </div>
+
+            <div class="form-group">
+                <label for="pizzaType">Choisir une Pizza :</label>
+                <select id="pizzaType"></select> </div>
+
+            <div class="form-group">
+                <label for="address">Adresse de livraison :</label>
+                <textarea id="address" required placeholder="12 rue de la Paix..."></textarea>
+            </div>
+
+            <button type="submit" id="submitBtn">Passer la commande</button>
+        </form>
+
+        <div id="statusMessage" class="hidden"></div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

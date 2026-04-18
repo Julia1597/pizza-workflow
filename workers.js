@@ -27,6 +27,20 @@ zeebeClient.createWorker({
   },
 });
 
+
+// ─── WORKER 4 (en plus pour pouvoir valider la commande) ───
+zeebeClient.createWorker({
+  taskType: 'io.camunda.zeebe:userTask', // C'est le nom secret des tâches humaines
+  taskHandler: async (job) => {
+    console.log('[HUMAIN SIMULÉ] Le manager a vu la commande et la valide...');
+    
+    await delay(1500); // On simule le temps de réflexion de l'humain
+    
+    // On dit à Zeebe que la tâche est finie, ce qui débloque la suite !
+    return job.complete();
+  },
+});
+
 // ─── Worker 2 : Préparer la pizza ────────────────────────────
 zeebeClient.createWorker({
   taskType: 'prepare-pizza',
